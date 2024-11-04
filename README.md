@@ -1,8 +1,11 @@
-# React + Vite
+# 설문조사 현황판 (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+이 프로젝트는 React와 Vite를 사용하여 만든 설문조사 현황판입니다. 이 현황판은 API에서 설문 데이터를 가져와 차트로 시각화하여 설문 응답을 실시간으로 모니터링하고 분석할 수 있도록 합니다.
 
-Currently, two official plugins are available:
+## 주요 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **실시간 데이터 가져오기**: API에서 설문 응답 데이터를 가져와 최신 정보를 표시합니다.
+
+
+## 프로젝트 구조
+추가 예정
