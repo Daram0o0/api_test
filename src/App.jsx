@@ -3,7 +3,7 @@ import { getSurveyList } from "./testAPI";
 
 function App() {
   const [surveys, setSurveys] = useState([]);
-
+// test
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSurveyList(name);
