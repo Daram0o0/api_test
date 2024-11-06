@@ -9,10 +9,9 @@ function SurveyList() {
   useEffect(() => {
     const fetchAllSurveys = async () => {
       const allSurveys = [];
-      let total = 0;
 
-      for (let i = 0; i < surveyIds.length; i += 2) {
-        const batch = surveyIds.slice(i, i + 2);
+      for (let i = 0; i < surveyIds.length; i ++) {
+        const batch = surveyIds.slice(i, i + 1);
 
         const promises = batch.map(async (item) => {
           const data = await getSurveyList({ form_id: item.id });
@@ -22,7 +21,7 @@ function SurveyList() {
         });
 
         await Promise.all(promises);
-        await new Promise((resolve) => setTimeout(resolve, 20000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
       setSurveys(allSurveys);
@@ -30,8 +29,6 @@ function SurveyList() {
 
     fetchAllSurveys();
   }, []);
-
-  console.log(surveys)
 
   return (
     <div style={styles.wrapper}>
