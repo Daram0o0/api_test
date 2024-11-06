@@ -1,34 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { getSurveyList } from './testAPI';
-import surveyIds from './data/idRequestList.json';
-import { styles } from './styles';
+import React, { useState, useEffect } from "react";
+import { getSurveyList } from "./testAPI";
+import surveyIds from "./data/idRequestList.json";
+import { styles } from "./styles";
 
 function SurveyList() {
-  const [surveys, setSurveys] = useState();
+  const [surveys, setSurveys] = useState([]);
 
   useEffect(() => {
     const fetchAllSurveys = async () => {
-      const allSurveys = [];
+      const allSurveys = await surveyIds.reduce(async (accPromise, item) => {
+        const acc = await accPromise;
 
-      for (let i = 0; i < surveyIds.length; i ++) {
-        const batch = surveyIds.slice(i, i + 1);
+        const data = await getSurveyList({ form_id: item.id });
+        if (data) {
+          acc.push({ type: item.type, data });
+        }
 
-        const promises = batch.map(async (item) => {
-          const data = await getSurveyList({ form_id: item.id });
-          if (data) {
-            allSurveys.push({ type: item.type, data });
-          }
-        });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        await Promise.allSettled(promises);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
+        return acc;
+      }, Promise.resolve([]));
 
       setSurveys(allSurveys);
     };
 
     fetchAllSurveys();
   }, []);
+
+  const hasSurveys = surveys.length > 0;
 
   return (
     <div style={styles.wrapper}>
@@ -37,13 +36,17 @@ function SurveyList() {
         <div style={styles.header}>#</div>
         <div style={styles.header}>Type</div>
         <div style={styles.header}>Total Items</div>
-        {surveys? surveys.map((survey, index) => (
-          <React.Fragment key={index}>
-            <div style={styles.cell}>{index + 1}</div>
-            <div style={styles.cell}>{survey.type}</div>
-            <div style={styles.cell}>{survey.data.total_items}</div>
-          </React.Fragment>
-        )) : <div className='loadingText'>{"Loading..."}</div>}
+        {hasSurveys ? (
+          surveys.map((survey, index) => (
+            <React.Fragment key={index}>
+              <div style={styles.cell}>{index + 1}</div>
+              <div style={styles.cell}>{survey.type}</div>
+              <div style={styles.cell}>{survey.data.total_items}</div>
+            </React.Fragment>
+          ))
+        ) : (
+          <div className="loadingText">{"Loading..."}</div>
+        )}
       </div>
     </div>
   );
