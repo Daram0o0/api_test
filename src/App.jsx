@@ -20,7 +20,7 @@ function SurveyList() {
           }
         });
 
-        await Promise.all(promises);
+        await Promise.allSettled(promises);
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
 
@@ -32,7 +32,7 @@ function SurveyList() {
 
   return (
     <div style={styles.wrapper}>
-      <h1>{"2024 한국영상대학교 현황판"}</h1>
+      <h1>{"2024 한국영상대학교 설문조사 현황판"}</h1>
       <div style={styles.grid}>
         <div style={styles.header}>#</div>
         <div style={styles.header}>Type</div>
