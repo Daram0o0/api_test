@@ -22,7 +22,7 @@ function SurveyList() {
         });
 
         await Promise.all(promises);
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        await new Promise((resolve) => setTimeout(resolve, 20000));
       }
 
       setSurveys(allSurveys);
