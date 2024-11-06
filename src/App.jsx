@@ -1,89 +1,55 @@
-import { useEffect, useState } from "react";
-import { getSurveyList } from "./testAPI";
+import React, { useState, useEffect } from 'react';
+import { getSurveyList } from './testAPI';
+import surveyIds from './data/idRequestList.json';
+import { styles } from './styles';
 
-function App() {
-  const [surveys, setSurveys] = useState([]);
-// test
+function SurveyList() {
+  const [surveys, setSurveys] = useState();
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getSurveyList();
-      if (data) {
-        setSurveys(data);
+    const fetchAllSurveys = async () => {
+      const allSurveys = [];
+      let total = 0;
+
+      for (let i = 0; i < surveyIds.length; i += 2) {
+        const batch = surveyIds.slice(i, i + 2);
+
+        const promises = batch.map(async (item) => {
+          const data = await getSurveyList({ form_id: item.id });
+          if (data) {
+            allSurveys.push({ type: item.type, data });
+          }
+        });
+
+        await Promise.all(promises);
+        await new Promise((resolve) => setTimeout(resolve, 10000));
       }
+
+      setSurveys(allSurveys);
     };
-    console.log(surveys)
-    fetchData();
+
+    fetchAllSurveys();
   }, []);
 
+  console.log(surveys)
+
   return (
-    <div>
-    {surveys}
+    <div style={styles.wrapper}>
+      <h1>{"2024 한국영상대학교 현황판"}</h1>
+      <div style={styles.grid}>
+        <div style={styles.header}>#</div>
+        <div style={styles.header}>Type</div>
+        <div style={styles.header}>Total Items</div>
+        {surveys? surveys.map((survey, index) => (
+          <React.Fragment key={index}>
+            <div style={styles.cell}>{index + 1}</div>
+            <div style={styles.cell}>{survey.type}</div>
+            <div style={styles.cell}>{survey.data.total_items}</div>
+          </React.Fragment>
+        )) : <div className='loadingText'>{"Loading..."}</div>}
+      </div>
     </div>
-    // <div
-    //   style={{
-    //     padding: "20px",
-    //     maxWidth: "1400px",
-    //     margin: "0 auto",
-    //     fontSize: "32px",
-    //   }}
-    // >
-    //   <h1>{"설문조사 현황판"}</h1>
-    //   {surveys.length > 0 ? (
-    //     <table style={{ width: "100%", borderCollapse: "collapse" }}>
-    //       <thead>
-    //         <tr>
-    //           <th
-    //             style={{
-    //               borderBottom: "1px solid #ddd",
-    //               padding: "10px",
-    //               textAlign: "left",
-    //             }}
-    //           >
-    //             제목
-    //           </th>
-    //           <th
-    //             style={{
-    //               borderBottom: "1px solid #ddd",
-    //               padding: "10px",
-    //               textAlign: "right",
-    //             }}
-    //           >
-    //             응답 수
-    //           </th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {surveys.map((survey, idx) => (
-    //           <tr key={survey.form_id}>
-    //             <td
-    //               style={{
-    //                 padding: "10px",
-    //                 textAlign: "left",
-    //                 borderBottom: "1px solid #ddd",
-    //               }}
-    //             >
-    //               {idx + 1}
-    //               {" : "}
-    //               {survey.title}
-    //             </td>
-    //             <td
-    //               style={{
-    //                 padding: "10px",
-    //                 textAlign: "right",
-    //                 borderBottom: "1px solid #ddd",
-    //               }}
-    //             >
-    //               {survey.collection.responses_count}
-    //             </td>
-    //           </tr>
-    //         ))}
-    //       </tbody>
-    //     </table>
-    //   ) : (
-    //     <p>Loading surveys...</p>
-    //   )}
-    // </div>
   );
 }
 
-export default App;
+export default SurveyList;
