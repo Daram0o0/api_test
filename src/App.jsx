@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getSurveyList } from "./testAPI";
-import surveyIds from "./data/idRequestList.json";
+// import surveyIds from "./data/idRequestList.json";
 import { styles } from "./styles";
 
 function SurveyList() {
   const [surveys, setSurveys] = useState([]);
+  const SURVEY_IDS = import.meta.env.VITE_APP_SURVEY_IDS;
 
   useEffect(() => {
     const fetchAllSurveys = async () => {
-      const allSurveys = await surveyIds.reduce(async (accPromise, item) => {
+      const allSurveys = await SURVEY_IDS.reduce(async (accPromise, item) => {
         const acc = await accPromise;
 
         const data = await getSurveyList({ form_id: item.id });
