@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getSurveyList } from "../api/testAPI";
 import surveyIds from "./data/idRequestList.json";
 import { styles } from "./styles";
+import getSurveyList from "./api/testAPI";
 
 function SurveyList() {
   const [surveys, setSurveys] = useState([]);
