@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
-export const getSurveyList = async ({form_id}) => {
+const getSurveyList = async ({ form_id }) => {
   try {
     const response = await axios.get(`/api/v1/forms/${form_id}/responses`, {
       headers: {
@@ -15,3 +15,4 @@ export const getSurveyList = async ({form_id}) => {
     return null;
   }
 };
+export default getSurveyList;
