@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getSurveyList } from "./testAPI";
+import { getSurveyList } from "./api/testAPI";
 import surveyIds from "./data/idRequestList.json";
 import { styles } from "./styles";
 
